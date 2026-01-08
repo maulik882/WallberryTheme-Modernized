@@ -1,0 +1,7 @@
+{
+	"WLOADING": "Loading Weather Data&hellip;",
+
+	"TODAY": "Today",
+	"ERROR": "Error fetching weather:",
+	"RETRYING": "This is probably due to a network issue; Retrying in {delay} seconds."
+}
