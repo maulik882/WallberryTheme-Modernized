@@ -76,6 +76,7 @@ Module.register("WallberryTheme", {
 	},
 
 	fetchPhoto: function () {
+		Log.info("WallberryTheme: fetchPhoto called. Last update was: " + this.lastUpdate + ". Time now: " + Date.now());
 		var url = "https://api.unsplash.com/photos/random?" +
 			"client_id=" + this.config.unsplashAccessKey +
 			"&collections=" + this.config.collections +
@@ -107,6 +108,8 @@ Module.register("WallberryTheme", {
 				if ("errors" in unsplashData) {
 					mod.processError(`The Unsplash API returned the error "${unsplashData["errors"].join(", ")}"`);
 				} else {
+					mod.lastUpdate = Date.now();
+					Log.info("WallberryTheme: Photo fetched successfully. New lastUpdate: " + mod.lastUpdate);
 					mod.processPhoto(unsplashData);
 				}
 			})
@@ -163,16 +166,14 @@ Module.register("WallberryTheme", {
 		this.photoElement = this.img;
 	},
 
+	lastUpdate: 0,
+
 	suspend: function () {
-		Log.info("Suspending WallberryTheme...");
-		this.setBackgroundTint({ r: 0, g: 0, b: 0 }); // set background back to black
-		clearTimeout(this.fetchTimer);
+		Log.info("WallberryTheme: Received suspend signal (IGNORED to maintain background).");
 	},
 
 	resume: function () {
-		Log.info("Waking WallberryTheme...");
-		clearTimeout(this.fetchTimer);
-		this.fetchPhoto();
+		Log.info("WallberryTheme: Received resume signal (IGNORED to maintain schedule).");
 	},
 
 	nunjucksEnvironment: function () {
